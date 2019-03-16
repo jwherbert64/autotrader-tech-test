@@ -13,6 +13,7 @@
 
 <script>
 export default {
+  name: 'SearchFormSelect',
   data: function () {
     let data = {
       selectedOption: ''
@@ -20,7 +21,6 @@ export default {
     data = Object.assign({}, data, this.categoryType)
     return data
   },
-  name: 'SearchSelect',
   props: [
     'categoryType',
     'categoryOptions'

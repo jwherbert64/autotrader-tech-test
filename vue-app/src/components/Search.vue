@@ -1,23 +1,14 @@
 <template>
   <div class="search">
     <p class="search__title">{{ title }}</p>
-    <form class="search__form" v-on:submit="onSubmitSearchForm">
-      <SearchSelect v-for="(searchCategory, index) in searchCategories"
-        v-bind:categoryOptions="searchCategory.options"
-        v-bind:categoryType="index"
-        v-bind:key="index"
-        v-on:select-category-option="onSelectCategoryOption">
-      </SearchSelect>
-      <input class="search__submit" type="submit" value="Show Dimensions">
-    </form>
-    <div>Make: {{ selectedOptions.make }}</div>
-    <div>Model: {{ selectedOptions.model }}</div>
-    <div>Year: {{ selectedOptions.year }}</div>
+    <SearchForm v-bind:searchCategories="searchCategories"
+      v-on:submit-search-form="onSubmitSearchForm">
+    </SearchForm>
   </div>
 </template>
 
 <script>
-import SearchSelect from './SearchSelect.vue'
+import SearchForm from './SearchForm.vue'
 
 export default {
   name: 'Search',
@@ -46,24 +37,16 @@ export default {
             '2010'
           ]
         }
-      },
-      selectedOptions: {
-        make: null,
-        model: null,
-        year: null
       }
     }
   },
   methods: {
-    onSelectCategoryOption: function (selectedOption, categoryType) {
-      this.selectedOptions[categoryType] = selectedOption
-    },
-    onSubmitSearchForm: function () {
-
+    onSubmitSearchForm: function (selectedOptions) {
+      console.log('selectedOptions: ', selectedOptions)
     }
   },
   components: {
-    SearchSelect
+    SearchForm
   }
 }
 </script>
