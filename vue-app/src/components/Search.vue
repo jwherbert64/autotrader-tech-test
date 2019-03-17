@@ -1,23 +1,19 @@
 <template>
   <div class="search">
     <p class="search__title">{{ title }}</p>
-    <div v-if="hasError">
-      <p>An error has occurred...</p>
-    </div>
-    <div v-else-if="isLoading">
-      <p>Loading...</p>
-    </div>
-    <SearchForm v-else
-      v-bind:searchCategories="searchCategories"
+    <SearchForm v-bind:searchCategories="searchCategories"
       v-bind:searchYears="searchYears"
+      v-bind:selectedOptions="selectedOptions"
       v-on:submit-search-form="onSubmitSearchForm">
     </SearchForm>
+    <SearchResults v-bind:selectedOptions="selectedOptions">
+    </SearchResults>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
 import SearchForm from './SearchForm.vue'
+import SearchResults from './SearchResults.vue'
 
 export default {
   name: 'Search',
@@ -34,40 +30,32 @@ export default {
           ids: []
         }
       },
-      searchYears: [],
-      isLoading: true,
-      hasError: false
+      searchYears: {
+        values: []
+      },
+      selectedOptions: {
+        make: '',
+        model: '',
+        year: ''
+      }
     }
   },
   methods: {
-    onSubmitSearchForm: function (selectedOptions) {
-      console.log('selectedOptions: ', selectedOptions)
+    onSubmitSearchForm: function (newSelectedOptions) {
+      this.selectedOptions = newSelectedOptions
+      let selectedOptions = this.selectedOptions
+      let searchCategories = this.searchCategories
+      const categoryKeys = Object.keys(this.searchCategories)
+      categoryKeys.forEach(function (categoryKey) {
+        selectedOptions[categoryKey] = searchCategories[categoryKey].names[newSelectedOptions[categoryKey]]
+      })
+      let searchYears = this.searchYears
+      selectedOptions['year'] = searchYears.values[newSelectedOptions['year']]
     }
   },
   components: {
-    SearchForm
-  },
-  mounted () {
-    const categoryKeys = Object.keys(this.searchCategories)
-    categoryKeys.map(categoryKey =>
-      axios.get('https://vehicles-staging.platform.autotrader.com.au/api/v1/' + categoryKey + 's?')
-        .then(response => {
-          let searchResults = response.data.data
-          let searchCategory = this.searchCategories[categoryKey]
-          searchCategory.names = searchResults.map(searchCategory => searchCategory.name)
-          searchResults.forEach(function (searchResult) {
-            searchCategory.names.push(searchResult.name)
-            searchCategory.ids.push(searchResult.id)
-          })
-        })
-        .catch(error => {
-          console.log(error)
-          this.hasError = true
-        })
-        .finally(() => {
-          this.isLoading = false
-        })
-    )
+    SearchForm,
+    SearchResults
   }
 }
 </script>
