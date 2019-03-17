@@ -3,7 +3,6 @@
     <p class="search__title">{{ title }}</p>
     <SearchForm v-bind:searchCategories="searchCategories"
       v-bind:searchYears="searchYears"
-      v-bind:selectedOptions="selectedOptions"
       v-on:submit-search-form="onSubmitSearchForm">
     </SearchForm>
     <SearchResults v-bind:selectedOptions="selectedOptions">
@@ -42,7 +41,7 @@ export default {
   },
   methods: {
     onSubmitSearchForm: function (newSelectedOptions) {
-      this.selectedOptions = newSelectedOptions
+      this.selectedOptions = {}
       let selectedOptions = this.selectedOptions
       let searchCategories = this.searchCategories
       const categoryKeys = Object.keys(this.searchCategories)
@@ -51,6 +50,7 @@ export default {
       })
       let searchYears = this.searchYears
       selectedOptions['year'] = searchYears.values[newSelectedOptions['year']]
+      this.title = selectedOptions['make'] + ' ' + selectedOptions['model'] + ' ' + selectedOptions['year']
     }
   },
   components: {

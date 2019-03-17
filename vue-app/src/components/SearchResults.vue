@@ -1,34 +1,69 @@
 <template>
-  <div class="search__results">
-    {{ selectedOptions }}
+  <div class="search__results-wrapper">
+    <div v-if="searchResultsFeedback.hasError">
+      <p>An error has occurred...</p>
+    </div>
+    <div v-else-if="searchResultsFeedback.isLoading">
+      <p>Loading...</p>
+    </div>
+    <div class="search__results" v-else>
+      <div>
+        {{ selectedOptions }}
+      </div>
+      <div>
+        {{ searchResults.result }}
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import SearchService from '../services/searchService'
 
 export default {
   name: 'SearchResults',
+  data: function () {
+    return {
+      searchService: new SearchService(),
+      searchResults: {
+        dimensions: [{
+          length: null,
+          width: null,
+          height: null,
+          kerb_weight: null,
+          variant: null
+        }],
+        minimums: {
+          length: null,
+          width: null,
+          height: null,
+          kerb_weight: null
+        },
+        maximums: {
+          length: null,
+          width: null,
+          height: null,
+          kerb_weight: null
+        }
+      },
+      searchResultsFeedback: {
+        hasError: false,
+        isLoading: false
+      }
+    }
+  },
   props: [
     'selectedOptions'
   ],
   watch: {
     selectedOptions: function (searchOptions) {
-      axios.get('https://vehicles-staging.platform.autotrader.com.au/api/v1/dimensions?make=' +
-        this.selectedOptions['make'] +
-        '&model=' + this.selectedOptions['model'] +
-        '&year=' + this.selectedOptions['year'])
-        .then(response => {
-          let searchResults = response.data.data
-          console.log('searchResults: ', searchResults)
-        })
-        .catch(error => {
-          console.log(error)
-          this.hasError = true
-        })
-        .finally(() => {
-          this.isLoading = false
-        })
+      this.searchResultsFeedback.isLoading = true
+      this.searchService.fetchSearchResults(
+        this.selectedOptions,
+        this.searchResults,
+        this.searchResultsFeedback,
+        searchOptions
+      )
     }
   }
 }
