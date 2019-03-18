@@ -68,19 +68,35 @@ body {
 
 .search__results-table {
   width: 100%;
+  border-spacing: 0;
+}
+
+.search__results-table tr:nth-child(even) {
+  background: var(--color-light-grey);
 }
 
 .search__results-table th {
-  text-align: left;
+  height: 40px;
   color: var(--color-dark-blue);
+}
+
+.search__results-table td {
+  vertical-align: middle;
+  height: 20px;
+  padding: 10px;
+  text-align: center;
 }
 
 .search__hero h1 {
   color: var(--color-dark-blue);
 }
 
-.search__hero p, .search__results p {
+.search__hero p {
   height: 160px;
+}
+
+.search__results p {
+  height: 140px;
 }
 
 @media (min-width: 640px) {
@@ -127,6 +143,7 @@ body {
 
   .search__results-table td {
     width: 33%;
+    padding: 20px;
   }
 
   .search__hero p, .search__results p {
