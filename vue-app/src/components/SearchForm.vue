@@ -78,12 +78,12 @@ export default {
           break
       }
 
-      if (this.selectedOptions.make !== '' &&
-        this.selectedOptions.model !== '' &&
-        this.selectedOptions.year !== '') {
-        this.canSubmit = true
-      } else {
+      if (this.selectedOptions.make === '' ||
+        this.selectedOptions.model === '' ||
+        this.selectedOptions.year === '') {
         this.canSubmit = false
+      } else {
+        this.canSubmit = true
       }
     }
   },

@@ -1,5 +1,6 @@
 <template>
-  <div class="search__results-wrapper" v-if="resultsFeedback.hasLoaded">
+  <div class="search__results-wrapper"
+    v-if="resultsFeedback.hasLoaded">
     <div v-if="resultsFeedback.hasError">
       <p>An error has occurred...</p>
     </div>
@@ -7,7 +8,6 @@
       <p>Loading...</p>
     </div>
     <div class="search__results" v-else>
-      <h2>{{ resultsTitle }}</h2>
       <p>
         {{ resultsParagraph }}
         {{ searchResults.minimums.height }}cm to
@@ -42,8 +42,8 @@ export default {
         isLoading: false,
         hasLoaded: false
       },
-      resultsTitle: '',
-      resultsParagraph: ''
+      resultsParagraph: '',
+      hideParagraph: false
     }
   },
   props: [
@@ -64,6 +64,7 @@ export default {
         searchOptions
       )
 
+      this.hasLoaded = false
       this.resultsParagraph = 'The dimensions shown below are the height, width and length of each variant for the ' +
         searchOptions.make + ' ' +
         searchOptions.model + ' ' +

@@ -1,16 +1,16 @@
 body {
-  background-color: var(--color-light-blue);
+  background: var(--color-light-blue);
 	margin: 0;
 }
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  color: var(--color-text);
+  color: var(--color-dark-grey);
 }
 
 .app__header {
 	padding: 20px 40px;
-  background: linear-gradient(-90deg,#f68d28,#f56a00);
+  background: linear-gradient(-90deg, #f68d28, #f56a00);
 }
 
 .app__header img {
@@ -21,22 +21,67 @@ body {
 }
 
 .search__hero {
-  background-color: #FFF;
-  box-shadow: 0 3px 10px 0 rgba(0,0,0,.08);
   margin-top: 20px;
   padding: 20px;
-}
-
-.search__hero p {
-  height: 160px;
+  background: var(--color-white);
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, .08);
 }
 
 .search__form {
+  display: flex;
+  flex-direction: column;
   height: 160px;
   margin-top: 20px;
+  padding: 2px;
+  background: var(--color-orange);
 }
 
-@media (min-width: 768px) {
+.search__category-select {
+  height: 25%;
+  border-radius: 6px;
+}
+
+.search__submit {
+  height: 25%;
+  border-style: none;
+  background: var(--color-blue);
+  font-weight: bold;
+  color: var(--color-white);
+  border-radius: 6px;
+  transition: background .5s ease;
+}
+
+.search__submit:hover {
+  background: var(--color-hover-blue);
+}
+
+.search__submit:disabled {
+  background: var(--color-grey);
+}
+
+.search__results {
+  padding: 10px;
+  background: var(--color-white);
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, .08);
+}
+
+.search__results-table {
+  width: 100%;
+}
+
+.search__results-table th {
+  text-align: left;
+}
+
+.search__hero h1 {
+  color: var(--color-dark-blue);
+}
+
+.search__hero p, .search__results p {
+  height: 160px;
+}
+
+@media (min-width: 640px) {
 	.app__header img {
 		margin: 0;
 	}
@@ -50,13 +95,38 @@ body {
     margin-top: 40px;
   }
 
-  .search__hero p {
-    height: 80px;
+  .search__form {
+    flex-direction: row;
+    height: 40px;
+    margin-top: 40px;
+    border-radius: 6px;
   }
 
-  .search__form {
+  .search__category-select {
+    width: 25%;
+    height: 100%;
+  }
+
+  .search__submit {
+    width: 25%;
+    height: 100%;
+  }
+
+  .search__results {
+    margin: 0 10px;
+    padding: 20px;
+  }
+
+  .search__results-table th {
+    width: 33%;
+  }
+
+  .search__results-table td {
+    width: 33%;
+  }
+
+  .search__hero p, .search__results p {
     height: 80px;
-    margin-top: 40px;
   }
 }
 

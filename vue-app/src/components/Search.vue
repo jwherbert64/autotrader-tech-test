@@ -1,7 +1,7 @@
 <template>
   <div class="search">
     <div class="search__hero">
-      <h2>{{ searchTitle }}</h2>
+      <h1>{{ searchTitle }}</h1>
       <p v-if="!searchSubmitted">
         Ever wanted to know the dimensions of a car? It's useful to determine if a car will fit in your garage,
         for parking and car park restrictions and to know if there is space in the car for all your daily needs.
