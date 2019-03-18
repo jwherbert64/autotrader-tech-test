@@ -15,8 +15,8 @@ body {
 
 .app__header img {
   display: block;
-	width: 400px;
-	height: 100px;
+	width: 200px;
+	height: 50px;
 	margin: auto;
 }
 
@@ -60,6 +60,7 @@ body {
 }
 
 .search__results {
+  margin-top: 20px;
   padding: 10px;
   background: var(--color-white);
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, .08);
@@ -71,6 +72,7 @@ body {
 
 .search__results-table th {
   text-align: left;
+  color: var(--color-dark-blue);
 }
 
 .search__hero h1 {
@@ -83,6 +85,8 @@ body {
 
 @media (min-width: 640px) {
 	.app__header img {
+    width: 400px;
+    height: 100px;
 		margin: 0;
 	}
 

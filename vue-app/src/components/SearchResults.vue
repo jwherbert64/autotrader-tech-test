@@ -39,7 +39,7 @@ export default {
       },
       resultsFeedback: {
         hasError: false,
-        isLoading: false,
+        isLoading: true,
         hasLoaded: false
       },
       resultsParagraph: '',
