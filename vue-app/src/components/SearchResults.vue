@@ -11,7 +11,7 @@
         {{ selectedOptions }}
       </div>
       <div>
-        {{ searchResults.result }}
+        {{ searchResults }}
       </div>
     </div>
   </div>
@@ -26,25 +26,9 @@ export default {
     return {
       searchService: new SearchService(),
       searchResults: {
-        dimensions: [{
-          length: null,
-          width: null,
-          height: null,
-          kerb_weight: null,
-          variant: null
-        }],
-        minimums: {
-          length: null,
-          width: null,
-          height: null,
-          kerb_weight: null
-        },
-        maximums: {
-          length: null,
-          width: null,
-          height: null,
-          kerb_weight: null
-        }
+        dimensions: [],
+        minimums: {},
+        maximums: {}
       },
       searchResultsFeedback: {
         hasError: false,
@@ -57,9 +41,11 @@ export default {
   ],
   watch: {
     selectedOptions: function (searchOptions) {
+      this.searchResults.dimensions = []
+      this.searchResults.minimums = {}
+      this.searchResults.maximums = {}
       this.searchResultsFeedback.isLoading = true
       this.searchService.fetchSearchResults(
-        this.selectedOptions,
         this.searchResults,
         this.searchResultsFeedback,
         searchOptions

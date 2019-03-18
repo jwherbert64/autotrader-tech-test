@@ -5,15 +5,16 @@ const API = 'https://vehicles-staging.platform.autotrader.com.au/api/v1/'
 
 class SearchService {
   initiateSearchForm (searchCategories, searchFeedback) {
-    const categoryKeys = Object.keys(searchCategories)
+    const categoryKeys = ['make', 'model']
     categoryKeys.map(categoryKey =>
       axios.get(API + categoryKey + 's?')
         .then(response => {
-          let searchOptions = response.data.data
-          let searchCategory = searchCategories[categoryKey]
-          searchOptions.forEach(function (searchOption) {
-            searchCategory.names.push(searchOption.name)
-            searchCategory.ids.push(searchOption.id)
+          let searchResponse = response.data.data
+          searchResponse.forEach(function (searchOption) {
+            let option = {}
+            option.name = searchOption.name
+            option.id = searchOption.id
+            searchCategories[categoryKey].push(option)
           })
         })
         .catch(error => {
@@ -26,18 +27,18 @@ class SearchService {
     )
   }
 
-  updateCategoryModels (searchCategories, searchFeedback, selectedIndex, categoryKey) {
+  updateCategoryModel (searchCategories, searchFeedback, selectedIndex) {
     axios.get(API + 'models?make_id=' +
-      searchCategories[categoryKey].ids[selectedIndex]
+      searchCategories.make[selectedIndex].id
     )
       .then(response => {
-        let searchOptions = response.data.data
-        let searchCategory = searchCategories['model']
-        searchCategory.names = []
-        searchCategory.ids = []
-        searchOptions.forEach(function (searchOption) {
-          searchCategory.names.push(searchOption.name)
-          searchCategory.ids.push(searchOption.id)
+        let searchResponse = response.data.data
+        searchCategories.model = []
+        searchResponse.forEach(function (searchOption) {
+          let option = {}
+          option.name = searchOption.name
+          option.id = searchOption.id
+          searchCategories.model.push(option)
         })
       })
       .catch(error => {
@@ -49,14 +50,14 @@ class SearchService {
       })
   }
 
-  updateCategoryYears (searchCategories, searchYears, searchFeedback, selectedOptions, selectedIndex, categoryKey) {
+  updateCategoryYear (searchCategories, searchFeedback, selectedOptions, selectedIndex) {
     axios.get(API + 'vehicles/years?make_id=' +
-      searchCategories['make'].ids[selectedOptions['make']] + '&model_id=' +
-      searchCategories[categoryKey].ids[selectedIndex]
+      searchCategories.make[selectedOptions.make].id + '&model_id=' +
+      searchCategories.model[selectedIndex].id
     )
       .then(response => {
-        let searchOptions = response.data.data
-        searchYears.values = searchOptions.map(searchYear => searchYear)
+        let searchResponse = response.data.data
+        searchCategories.year = searchResponse.map(searchOption => searchOption)
       })
       .catch(error => {
         console.log(error)
@@ -67,14 +68,36 @@ class SearchService {
       })
   }
 
-  fetchSearchResults (selectedOptions, searchResults, searchResultsFeedback, searchOptions) {
+  fetchSearchResults (searchResults, searchResultsFeedback, searchOptions) {
     axios.get(API + 'dimensions?make=' +
-        selectedOptions['make'] + '&model=' +
-        selectedOptions['model'] + '&year=' +
-        selectedOptions['year']
+        searchOptions['make'] + '&model=' +
+        searchOptions['model'] + '&year=' +
+        searchOptions['year']
     )
       .then(response => {
-        searchResults.result = response.data.data
+        let searchResponse = response.data.data
+
+        searchResponse.dimensions.forEach(function (searchDimension) {
+          let dimension = {}
+          dimension.length = searchDimension.length
+          dimension.width = searchDimension.width
+          dimension.height = searchDimension.height
+          dimension.kerb_weight = searchDimension.kerb_weight
+          dimension.variant = searchDimension.variant
+          searchResults.dimensions.push(dimension)
+        })
+
+        const searchMinimums = searchResponse.minimums
+        searchResults.minimums.length = searchMinimums.length
+        searchResults.minimums.width = searchMinimums.width
+        searchResults.minimums.height = searchMinimums.height
+        searchResults.minimums.kerb_weight = searchMinimums.kerb_weight
+
+        const searchMaximums = searchResponse.maximums
+        searchResults.maximums.length = searchMaximums.length
+        searchResults.maximums.width = searchMaximums.width
+        searchResults.maximums.height = searchMaximums.height
+        searchResults.maximums.kerb_weight = searchMaximums.kerb_weight
       })
       .catch(error => {
         console.log(error)

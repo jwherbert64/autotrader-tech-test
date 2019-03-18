@@ -13,7 +13,7 @@
         <span v-else>
           {{ categoryOption }}
         </span>
-      </option>      
+      </option>
     </select>
     <div>{{ selectedOptions[categoryKey] }}</div>
   </div>

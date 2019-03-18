@@ -2,7 +2,6 @@
   <div class="search">
     <p class="search__title">{{ title }}</p>
     <SearchForm v-bind:searchCategories="searchCategories"
-      v-bind:searchYears="searchYears"
       v-on:submit-search-form="onSubmitSearchForm">
     </SearchForm>
     <SearchResults v-bind:selectedOptions="selectedOptions">
@@ -20,17 +19,9 @@ export default {
     return {
       title: 'Car Dimensions',
       searchCategories: {
-        make: {
-          names: [],
-          ids: []
-        },
-        model: {
-          names: [],
-          ids: []
-        }
-      },
-      searchYears: {
-        values: []
+        make: [],
+        model: [],
+        year: []
       },
       selectedOptions: {
         make: '',
@@ -46,11 +37,13 @@ export default {
       let searchCategories = this.searchCategories
       const categoryKeys = Object.keys(this.searchCategories)
       categoryKeys.forEach(function (categoryKey) {
-        selectedOptions[categoryKey] = searchCategories[categoryKey].names[newSelectedOptions[categoryKey]]
+        if (searchCategories[categoryKey][newSelectedOptions[categoryKey]].hasOwnProperty('name')) {
+          selectedOptions[categoryKey] = searchCategories[categoryKey][newSelectedOptions[categoryKey]].name
+        } else {
+          selectedOptions[categoryKey] = searchCategories[categoryKey][newSelectedOptions[categoryKey]]
+        }
       })
-      let searchYears = this.searchYears
-      selectedOptions['year'] = searchYears.values[newSelectedOptions['year']]
-      this.title = selectedOptions['make'] + ' ' + selectedOptions['model'] + ' ' + selectedOptions['year']
+      this.title = selectedOptions.make + ' ' + selectedOptions.model + ' ' + selectedOptions.year
     }
   },
   components: {

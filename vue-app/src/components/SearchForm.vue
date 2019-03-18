@@ -9,19 +9,13 @@
     <form class="search__form"
       v-else
       v-on:submit="$emit('submit-search-form', selectedOptions)">
-      <SearchFormSelect v-for="(searchCategory, index) in searchCategories"
-        v-bind:categoryOptions="searchCategory.names"
-        v-bind:categoryKey="index"
-        v-bind:selectedOptions="selectedOptions"
-        v-bind:key="index"
-        v-on:select-category-option="onSelectCategoryOption">
-      </SearchFormSelect>
-      <SearchFormSelect v-bind:categoryOptions="searchYears.values"
-        v-bind:categoryKey="'year'"
-        v-bind:selectedOptions="selectedOptions"
-        v-bind:key="'year'"
-        v-on:select-category-option="onSelectCategoryOption">
-      </SearchFormSelect>
+        <SearchCategorySelect v-for="(searchCategory, key) in searchCategories"
+          v-bind:categoryOptions="searchCategory"
+          v-bind:categoryKey="key"
+          v-bind:selectedOptions="selectedOptions"
+          v-bind:key="key"
+          v-on:select-category-option="onSelectCategoryOption">
+        </SearchCategorySelect>
       <input class="search__submit" type="submit" value="Show Dimensions">
     </form>
   </div>
@@ -29,7 +23,7 @@
 
 <script>
 import SearchService from '../services/searchService'
-import SearchFormSelect from './SearchFormSelect.vue'
+import SearchCategorySelect from './SearchCategorySelect.vue'
 
 export default {
   name: 'SearchForm',
@@ -48,34 +42,30 @@ export default {
     }
   },
   props: [
-    'searchCategories',
-    'searchYears'
+    'searchCategories'
   ],
   methods: {
     onSelectCategoryOption: function (selectedIndex, categoryKey) {
       this.selectedOptions[categoryKey] = selectedIndex
       switch (categoryKey) {
         case 'make':
-          this.selectedOptions['model'] = ''
-          this.selectedOptions['year'] = ''
+          this.selectedOptions.model = ''
+          this.selectedOptions.year = ''
 
-          this.searchService.updateCategoryModels(
+          this.searchService.updateCategoryModel(
             this.searchCategories,
             this.searchFormFeedback,
-            selectedIndex,
-            categoryKey
+            selectedIndex
           )
           break
         case 'model':
-          this.selectedOptions['year'] = ''
+          this.selectedOptions.year = ''
 
-          this.searchService.updateCategoryYears(
+          this.searchService.updateCategoryYear(
             this.searchCategories,
-            this.searchYears,
             this.searchFormFeedback,
             this.selectedOptions,
-            selectedIndex,
-            categoryKey
+            selectedIndex
           )
           break
         case 'year':
@@ -85,7 +75,7 @@ export default {
     }
   },
   components: {
-    SearchFormSelect
+    SearchCategorySelect
   },
   mounted () {
     this.searchService.initiateSearchForm(this.searchCategories, this.searchFormFeedback)
