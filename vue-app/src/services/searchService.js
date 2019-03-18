@@ -68,11 +68,11 @@ class SearchService {
       })
   }
 
-  fetchSearchResults (searchResults, searchResultsFeedback, searchOptions) {
+  fetchSearchResults (searchResults, resultsFeedback, searchOptions) {
     axios.get(API + 'dimensions?make=' +
         searchOptions['make'] + '&model=' +
         searchOptions['model'] + '&year=' +
-        searchOptions['year']
+        searchOptions['year']// + '&cleanse=true'
     )
       .then(response => {
         let searchResponse = response.data.data
@@ -82,7 +82,7 @@ class SearchService {
           dimension.length = searchDimension.length
           dimension.width = searchDimension.width
           dimension.height = searchDimension.height
-          dimension.kerb_weight = searchDimension.kerb_weight
+          dimension.kerbWeight = searchDimension.kerb_weight
           dimension.variant = searchDimension.variant
           searchResults.dimensions.push(dimension)
         })
@@ -91,20 +91,22 @@ class SearchService {
         searchResults.minimums.length = searchMinimums.length
         searchResults.minimums.width = searchMinimums.width
         searchResults.minimums.height = searchMinimums.height
-        searchResults.minimums.kerb_weight = searchMinimums.kerb_weight
+        searchResults.minimums.kerbWeight = searchMinimums.kerb_weight
 
         const searchMaximums = searchResponse.maximums
         searchResults.maximums.length = searchMaximums.length
         searchResults.maximums.width = searchMaximums.width
         searchResults.maximums.height = searchMaximums.height
-        searchResults.maximums.kerb_weight = searchMaximums.kerb_weight
+        searchResults.maximums.kerbWeight = searchMaximums.kerb_weight
+
+        resultsFeedback.hasLoaded = true
       })
       .catch(error => {
         console.log(error)
-        searchResultsFeedback.hasError = true
+        resultsFeedback.hasError = true
       })
       .finally(() => {
-        searchResultsFeedback.isLoading = false
+        resultsFeedback.isLoading = false
       })
   }
 }

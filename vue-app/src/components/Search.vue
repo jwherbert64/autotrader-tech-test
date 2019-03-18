@@ -1,6 +1,12 @@
 <template>
   <div class="search">
-    <p class="search__title">{{ title }}</p>
+    <h2 class="search__title">{{ searchTitle }}</h2>
+    <p v-if="!searchSubmitted">
+      Ever wanted to know the dimensions of a car? It's useful to determine if a car will fit in your garage,
+      for parking and car park restrictions and to know if there is space in the car for all your daily needs.
+      We have provided the dimensions for a wide range of makes and models by year for you to easily and
+      quickly view all you need to know.
+    </p>
     <SearchForm v-bind:searchCategories="searchCategories"
       v-on:submit-search-form="onSubmitSearchForm">
     </SearchForm>
@@ -17,7 +23,6 @@ export default {
   name: 'Search',
   data: function () {
     return {
-      title: 'Car Dimensions',
       searchCategories: {
         make: [],
         model: [],
@@ -27,7 +32,9 @@ export default {
         make: '',
         model: '',
         year: ''
-      }
+      },
+      searchSubmitted: false,
+      searchTitle: 'Car Dimensions'
     }
   },
   methods: {
@@ -36,6 +43,7 @@ export default {
       let selectedOptions = this.selectedOptions
       let searchCategories = this.searchCategories
       const categoryKeys = Object.keys(this.searchCategories)
+
       categoryKeys.forEach(function (categoryKey) {
         if (searchCategories[categoryKey][newSelectedOptions[categoryKey]].hasOwnProperty('name')) {
           selectedOptions[categoryKey] = searchCategories[categoryKey][newSelectedOptions[categoryKey]].name
@@ -43,7 +51,11 @@ export default {
           selectedOptions[categoryKey] = searchCategories[categoryKey][newSelectedOptions[categoryKey]]
         }
       })
-      this.title = selectedOptions.make + ' ' + selectedOptions.model + ' ' + selectedOptions.year
+
+      this.searchTitle = selectedOptions.year + ' ' +
+        selectedOptions.make + ' ' +
+        selectedOptions.model + ' Car Dimensions'
+      this.searchSubmitted = true
     }
   },
   components: {
