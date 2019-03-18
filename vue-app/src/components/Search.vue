@@ -1,12 +1,14 @@
 <template>
   <div class="search">
-    <h2 class="search__title">{{ searchTitle }}</h2>
-    <p v-if="!searchSubmitted">
-      Ever wanted to know the dimensions of a car? It's useful to determine if a car will fit in your garage,
-      for parking and car park restrictions and to know if there is space in the car for all your daily needs.
-      We have provided the dimensions for a wide range of makes and models by year for you to easily and
-      quickly view all you need to know.
-    </p>
+    <div class="search__hero">
+      <h2>{{ searchTitle }}</h2>
+      <p v-if="!searchSubmitted">
+        Ever wanted to know the dimensions of a car? It's useful to determine if a car will fit in your garage,
+        for parking and car park restrictions and to know if there is space in the car for all your daily needs.
+        We have provided the dimensions for a wide range of makes and models by year for you to easily and
+        quickly view all you need to know.
+      </p>
+    </div>
     <SearchForm v-bind:searchCategories="searchCategories"
       v-on:submit-search-form="onSubmitSearchForm">
     </SearchForm>
@@ -64,21 +66,3 @@ export default {
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>

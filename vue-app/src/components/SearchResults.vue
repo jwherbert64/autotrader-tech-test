@@ -57,7 +57,6 @@ export default {
       this.searchResults.dimensions = []
       this.searchResults.minimums = {}
       this.searchResults.maximums = {}
-      this.resultsFeedback.isLoading = true
 
       this.searchService.fetchSearchResults(
         this.searchResults,

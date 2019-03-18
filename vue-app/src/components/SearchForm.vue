@@ -16,7 +16,10 @@
           v-bind:key="key"
           v-on:select-category-option="onSelectCategoryOption">
         </SearchCategorySelect>
-      <input class="search__submit" type="submit" value="Show Dimensions">
+      <input class="search__submit"
+        type="submit"
+        value="Show Dimensions"
+        v-bind:disabled="!canSubmit">
     </form>
   </div>
 </template>
@@ -38,7 +41,8 @@ export default {
       searchFormFeedback: {
         hasError: false,
         isLoading: true
-      }
+      },
+      canSubmit: false
     }
   },
   props: [
@@ -47,8 +51,11 @@ export default {
   methods: {
     onSelectCategoryOption: function (selectedIndex, categoryKey) {
       this.selectedOptions[categoryKey] = selectedIndex
+
       switch (categoryKey) {
         case 'make':
+          this.searchCategories.model = []
+          this.searchCategories.year = []
           this.selectedOptions.model = ''
           this.selectedOptions.year = ''
 
@@ -59,6 +66,7 @@ export default {
           )
           break
         case 'model':
+          this.searchCategories.year = []
           this.selectedOptions.year = ''
 
           this.searchService.updateCategoryYear(
@@ -68,9 +76,14 @@ export default {
             selectedIndex
           )
           break
-        case 'year':
-          break
-        default:
+      }
+
+      if (this.selectedOptions.make !== '' &&
+        this.selectedOptions.model !== '' &&
+        this.selectedOptions.year !== '') {
+        this.canSubmit = true
+      } else {
+        this.canSubmit = false
       }
     }
   },

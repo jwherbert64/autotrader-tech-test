@@ -75,6 +75,8 @@ class SearchService {
         searchOptions['year']// + '&cleanse=true'
     )
       .then(response => {
+        resultsFeedback.isLoading = true
+
         let searchResponse = response.data.data
 
         searchResponse.dimensions.forEach(function (searchDimension) {
